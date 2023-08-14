@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  
+  <!-- 
+   core importer setup
+    -->
+
+  <bean id="importerInfoDao" class="org.geoserver.importer.ImporterInfoDAO"/>
+  
+  <bean id="importer" class="org.geoserver.importer.Importer">
+    <constructor-arg ref="catalog"/>
+    <constructor-arg ref="importerInfoDao"/>
+  </bean>
+  
+  <!--  format beans -->
+  <bean id="kmlFormat" class="org.geoserver.importer.format.KMLFileFormat" />
+  <bean id="gmlFormat" class="org.geoserver.importer.format.GMLFileFormat" />
+  <bean id="geoJsonFormat" class="org.geoserver.importer.format.GeoJSONFormat" />
+
+  <bean id="spatialFileExtensionsProvider" class="org.geoserver.importer.SpatialFileExtensionsProvider" />
+  
+  <bean id="ImporterCoreExtension"
+	class="org.geoserver.platform.ModuleStatusImpl">
+	<property name="module" value="gs-importer-core" />
+	<property name="name" value="Importer Core" />
+	<property name="component" value="Importer" />
+	<property name="available" value="true" />
+	<property name="enabled" value="true" />
+  </bean>
+
+  <!-- Import context automatic clean-up -->
+  <bean id="importerContextCleaner" class="org.geoserver.importer.ImporterContextCleaner">
+      <constructor-arg ref="importer"/>
+  </bean>
+  
+  <!-- Definition of how often the scheduled task runs -->
+  <bean id="importerContextCleanerTask"
+    class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
+    <!-- wait 10 seconds before starting repeated execution -->
+    <property name="delay" value="10000" />
+    <!-- run every 60 seconds -->
+    <property name="period" value="60000" />
+    <property name="runnable" ref="importerContextCleaner" />
+  </bean>
+  
+  <!-- And finally the class that instantiates the scheduled tasks and makes them run -->
+  <bean id="importerTimerFactory" class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean"
+        lazy-init="false">
+    <property name="scheduledExecutorTasks">
+      <list>
+        <ref bean="importerContextCleanerTask" />
+      </list>
+    </property>
+    <property name="daemon" value="true"/>
+  </bean>
+
+</beans>
