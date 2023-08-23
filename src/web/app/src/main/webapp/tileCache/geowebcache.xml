@@ -10,6 +10,21 @@
       <fileSystemBlockSize>4096</fileSystemBlockSize>
       <pathGeneratorType>TMS</pathGeneratorType>
     </FileBlobStore>
+    <MbtilesBlobStore default="true">
+      <id>mbtiles</id>
+      <enabled>true</enabled>
+      <rootDirectory>D:\geoserver-2.22.0\src\web\app\src\main\webapp\tileCache\gwc-mbtiles</rootDirectory>
+      <templatePath>{layer}/{grid}_{format}.sqlite</templatePath>
+      <poolSize>1000</poolSize>
+      <poolReaperIntervalMs>500</poolReaperIntervalMs>
+      <rowRangeCount>250</rowRangeCount>
+      <columnRangeCount>250</columnRangeCount>
+      <eagerDelete>true</eagerDelete>
+      <useCreateTime>false</useCreateTime>
+      <mbtilesMetadataDirectory>D:\geoserver-2.22.0\src\web\app\src\main\webapp\tileCache\gwc-mbtiles\layersMetadata</mbtilesMetadataDirectory>
+      <executorConcurrency>5</executorConcurrency>
+      <gzipVector>false</gzipVector>
+    </MbtilesBlobStore>
   </blobStores>
   <gridSets>
     <gridSet>

@@ -144,6 +144,7 @@
         <module>dds</module>
       </modules>
     </profile>
+
     <profile>
       <id>gpx</id>
       <modules>
@@ -327,6 +328,12 @@
       <id>spatialjson</id>
       <modules>
         <module>spatialjson</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>bandstif</id>
+      <modules>
+        <module>bandstif</module>
       </modules>
     </profile>
     <profile>
